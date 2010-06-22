@@ -38,28 +38,62 @@ def getDistributionData (AlignData):
 	return (score)
 
 def formatData (AlignData, Score):
-	LIMIT = 1000
+	LIMIT1 = 450
+	LIMIT2 = 2000
 	i = 0;
-	NewAlignData = Alignment(Gapped(IUPAC.protein,"-"))
+	ScorePoints = []
+        for i in xrange(4976):
+                ScorePoints.append(0)
+	i = 0
 	for record in AlignData.Alignment:
-	        print "Here"
-		if (Score[i] >= LIMIT):
-			print type(record.seq)
-			print type(record.id)
-			NewAlignData.add_sequence(record.seq.tostring(),record.id)
+	        #print "Here"
+		j = 0
+		for c in record.seq.tostring():
+			if (Score[j] <= LIMIT1):
+				if c != '-':
+					ScorePoints[i] -= 2
+			if (Score[j] >= LIMIT2):
+				if c != '-':
+					ScorePoints[i] += 2
+				else:
+					ScorePoints[i] -= 1		
+				#NewAlignData.add_sequence(record.seq.tostring(),record.id)
+			j += 1
+					
 		i+=1
-	return NewAlignData
+#	return NewAlignData
+	return ScorePoints
+	i = 0
+	DataList = list()
+	for record in AlignData.Alignment:
+		if(ScorePoints[i] >= 100):
+			NewAlignData = Alignment(Gapped(IUPAC.protein,"-"))
+			NewAlignData.add_sequence(record.id,record.seq.tostring())
+			DataList.append(NewAlignData)
+		i+=1
+
+	return DataList
+
+			
 				
 if __name__ == '__main__':
-	AlignData = ReadAlign('ncbi.sto','stockholm')
+	AlignData = ReadAlign('new_ncbi100.sto','stockholm')
 #	AlignData.printAlignment()
 	score = getDistributionData (AlignData)
 #	print score
-	NewAlignData = formatData(AlignData,score)
-	print "Akshay Here"
-	print NewAlignData
-	DataToWrite = WriteAlign(NewAlignData,"new_ncbi.sto","stockholm")
-	DataToWrite.writeToFile()
+#	NewAlignData = formatData(AlignData,score)
+	ScorePoints = formatData(AlignData,score)
+	print ScorePoints
+#	print "Akshay Here"
+#	print NewAlignData
+#	sum = 0
+#	for record in NewAlignData:
+#		sum+=1
+		#print record
+#	print sum
+		
+#	DataToWrite = WriteAlign(NewAlignData,"new_ncbi100.sto","stockholm")
+#	DataToWrite.writeToFile()
 	
 	
 
