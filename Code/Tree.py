@@ -4,6 +4,7 @@ from Bio import SeqIO
 from Bio.Align.Generic import Alignment
 from Bio.Alphabet import IUPAC, Gapped
 import psycopg2
+import types
 
 
 class Tree:
@@ -42,10 +43,12 @@ if __name__ == '__main__':
 			print type(Temp)
 			#Feed = (Temp)
 			print "1"
-			cursor.execute("SELECT seq from uniref101 where uniref_id = %s",(Temp,))
+			cursor.execute("SELECT seq from uniref100 where uniref_id = %s",(Temp,))
 			print "2"
 			DataFetch = cursor.fetchone()
-			if DataFetch !=  'None':
+			print "Type of output"
+			print type(DataFetch)
+			if type(DataFetch) is not types.NoneType:
 				SeqList.append(cursor.fetchone())
 			print "3"
 		conn.commit()
@@ -53,12 +56,20 @@ if __name__ == '__main__':
 	except Exception, err:
 		sys.stderr.write ('ERROR: %s \n' % str(err))
 		conn.rollback()
+	STreeId = sorted (TreeObj.Id)
+	try:
+		for i in range(len(SeqList)):
+			Feed = {"Table":"brct_data","Id":STreeId[i],"Seq":SeqList[i]}
+			cursor.execute("INSERT INTO %{Table}s (uniref_id,seq) values (%{Id}s, %{Seq})",Feed)
+		conn.commit()
+	except Exception, err:
+		conn.rollback()
+		print "Error while inserting into to database"
+		sys.stderr.write ('ERROR: %s \n' % str(err))
 	
 	conn.close()
-	for Temp in SeqList:
-		print Temp
 
-	
+
 	
 		
 		
