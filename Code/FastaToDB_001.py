@@ -46,7 +46,7 @@ class FileToDb:
 				DataState += 1;
 				PrevUnirefId = UnirefId
 				PrevSeq = Seq
-				UnirefId = Temp.split('>')[1]
+				UnirefId = Temp.split('>')[1].split(' ')[0]
 				Seq = ''
 			else:
 				print "In false >"
@@ -55,7 +55,7 @@ class FileToDb:
 				try:
 					print "Going to insert entry"
 					Feed = (PrevUnirefId, PrevSeq)
-					cursor.execute("INSERT INTO uniref101 (uniref_id,seq) values (%s, %s)",Feed)
+					cursor.execute("INSERT INTO uniref102 (uniref_id,seq) values (%s, %s)",Feed)
 					print DataState
 					print DbState
 					DbState += 1
@@ -63,12 +63,13 @@ class FileToDb:
 					sys.stderr.write ('ERROR: %s\n' % str(err))
 					conn.rollback()
 
+			
 		conn.commit()
 		conn.close()
 
 
 if __name__ == '__main__':
-	Obj =  FileToDb('uniref101.fasta','fasta','127.0.0.1','ureka','uniref101','ureka','ureka')
+	Obj =  FileToDb('uniref100.fasta','fasta','127.0.0.1','ureka','uniref101','ureka','ureka')
 	Obj.insert()
 
 

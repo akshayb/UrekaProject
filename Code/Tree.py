@@ -39,11 +39,14 @@ if __name__ == '__main__':
 	print "connection and cursor made"
 	try:
 		print "Entering the try and catch statement and going to select all the sequences with the target id in the already selected sequences"
-		for Temp in sorted(TreeObj.Id):
+		IdTempA = sorted(TreeObj.Id)
+		for Temp in IdTempA:
 			print type(Temp)
 			#Feed = (Temp)
 			print "1"
-			cursor.execute("SELECT seq from uniref100 where uniref_id = %s",(Temp,))
+			print Temp
+			cursor.execute("SELECT seq from uniref102 where uniref_id = %s",(Temp,))
+
 			print "2"
 			DataFetch = cursor.fetchone()
 			print "Type of output"
