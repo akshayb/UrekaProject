@@ -27,7 +27,7 @@ class WriteAlign:
 
 def getDistributionData (AlignData):
 	score = []
-	for i in xrange(485):
+	for i in xrange(923):
 		score.append(0)
 	for record in AlignData.Alignment:
 		i = 0
@@ -42,7 +42,7 @@ def formatData (AlignData, Score):
 	LIMIT2 = 2000
 	i = 0;
 	ScorePoints = []
-        for i in xrange(4976):
+        for i in xrange(6196):
                 ScorePoints.append(0)
 	i = 0
 	for record in AlignData.Alignment:
@@ -77,13 +77,15 @@ def formatData (AlignData, Score):
 			
 				
 if __name__ == '__main__':
-	AlignData = ReadAlign('new_ncbi100.sto','stockholm')
+#	AlignData = ReadAlign('new_ncbi100.sto','stockholm')
+
+	AlignData = ReadAlign('brca2.aln','fasta')
 #	AlignData.printAlignment()
 	score = getDistributionData (AlignData)
-#	print score
+	print score
 #	NewAlignData = formatData(AlignData,score)
-	ScorePoints = formatData(AlignData,score)
-	print ScorePoints
+#	ScorePoints = formatData(AlignData,score)
+#	print ScorePoints
 #	print "Akshay Here"
 #	print NewAlignData
 #	sum = 0
