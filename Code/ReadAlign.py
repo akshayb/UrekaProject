@@ -62,11 +62,11 @@ def formatData (AlignData, Score):
 					
 		i+=1
 #	return NewAlignData
-	return ScorePoints
+#	return ScorePoints
 	i = 0
 	DataList = list()
 	for record in AlignData.Alignment:
-		if(ScorePoints[i] >= 100):
+		if(ScorePoints[i] >= -250):
 			NewAlignData = Alignment(Gapped(IUPAC.protein,"-"))
 			NewAlignData.add_sequence(record.id,record.seq.tostring())
 			DataList.append(NewAlignData)
@@ -79,23 +79,37 @@ def formatData (AlignData, Score):
 if __name__ == '__main__':
 #	AlignData = ReadAlign('new_ncbi100.sto','stockholm')
 
-	AlignData = ReadAlign('brca2.aln','fasta')
+	AlignData = ReadAlign('meebo.aln','fasta')
 #	AlignData.printAlignment()
 	score = getDistributionData (AlignData)
 	print score
-#	NewAlignData = formatData(AlignData,score)
+	NewAlignData = formatData(AlignData,score)
 #	ScorePoints = formatData(AlignData,score)
 #	print ScorePoints
-#	print "Akshay Here"
+	print "Akshay Here"
 #	print NewAlignData
-#	sum = 0
-#	for record in NewAlignData:
-#		sum+=1
+	sum = 0
+	for record in NewAlignData:
+		sum+=1
 		#print record
-#	print sum
+#		print type(str(record))
+#		print type(str(record))
+#		print record.id
+#		print record.seq.tostring()
+	print sum
+
+#	RecordList = []
+#	for row in MyData.rows:
+#		record = SeqRecord(Seq(row[3], IUPAC.protein), id = row[0],name = row[0])
+#		RecordList.append(record)
 		
-#	DataToWrite = WriteAlign(NewAlignData,"new_ncbi100.sto","stockholm")
-#	DataToWrite.writeToFile()
+#	output_handle = open("meebo.fasta","w")
+#	SeqIO.write(RecordList, output_handle, "fasta")
+#	output_handle.close()
+
+		
+	DataToWrite = WriteAlign(NewAlignData,"new_meebo.sto","stockholm")
+	DataToWrite.writeToFile()
 	
 	
 
